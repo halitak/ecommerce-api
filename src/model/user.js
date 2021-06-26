@@ -1,7 +1,8 @@
 const mongoose = require('mongoose')
 const { isEmail } = require('validator')
+const bcrypt = require('bcrypt')
 
-const UserSchema = new mongoose.Schema(
+const userSchema = new mongoose.Schema(
   {
     firstName: {
       type: String,
@@ -40,6 +41,12 @@ const UserSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
-UserSchema.plugin(require('mongoose-autopopulate'))
+userSchema.pre('save', async function (next) {
+  const salt = await bcrypt.genSalt()
+  this.password = await bcrypt.hash(this.password, salt)
+  next()
+})
 
-module.exports = mongoose.model('User', UserSchema)
+userSchema.plugin(require('mongoose-autopopulate'))
+
+module.exports = mongoose.model('User', userSchema)

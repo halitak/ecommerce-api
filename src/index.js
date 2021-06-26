@@ -2,6 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
 const helmet = require('helmet')
+const cookieParser = require('cookie-parser')
 require('dotenv').config()
 require('./mongoConnection')
 
@@ -16,10 +17,16 @@ const indexRoutes = require('./routes/index')
 
 const app = express()
 
+app.use(cookieParser())
 app.use(helmet())
 app.use(morgan('dev'))
 app.use(cors())
 app.use(express.json())
+
+app.get('/set-cookie', (req, res) => {
+  res.cookie('newuser', false)
+  res.send('you got the cookie')
+})
 
 app.use('/products', productsRoutes)
 app.use('/users', usersRoutes)

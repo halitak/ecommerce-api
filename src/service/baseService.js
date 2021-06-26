@@ -4,13 +4,12 @@ class BaseService {
     this.filename = model.name.toLowerCase()
   }
 
-  getAll() {
+  async getAll() {
     return this.model.find()
   }
 
   async insert(object) {
-    const instance = await this.model.create(object)
-    return instance
+    return this.model.create(object)
   }
 
   async removeById(value) {

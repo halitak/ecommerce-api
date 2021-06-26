@@ -10,9 +10,9 @@ const {
 
 router.get('/', getUsers)
 
-router.get('/:id', getUser)
-
 router.post('/', addUser)
+
+router.get('/:id', getUser)
 
 router.delete('/:id', removeUser)
 
