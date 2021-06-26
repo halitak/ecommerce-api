@@ -22,7 +22,7 @@ const handleErrors = (err) => {
 }
 const maxAge = 3 * 24 * 60 * 60
 const createToken = (id) => {
-  return jwt.sign({ id }, 'kuzuryusen', { expiresIn: maxAge })
+  return jwt.sign({ id }, process.env.JWT_SECRET_KEY, { expiresIn: maxAge })
 }
 
 module.exports.login = async (req, res, next) => {
@@ -78,7 +78,7 @@ module.exports.checkToken = async (req, res) => {
   const token = req.body.jwt
   console.log(token)
   if (token) {
-    jwt.verify(token, 'kuzuryusen', (err, decodedToken) => {
+    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decodedToken) => {
       if (err) {
         console.log(err.message)
         res.json({ message: 'Invalid Token', check: false })
@@ -96,7 +96,7 @@ module.exports.checkUser = async (req, res) => {
   const token = req.body.jwt
   console.log(token)
   if (token) {
-    jwt.verify(token, 'kuzuryusen', async (err, decodedToken) => {
+    jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, decodedToken) => {
       if (err) {
         console.log(err.message)
         res.json({ message: 'Invalid Token', user: null })
